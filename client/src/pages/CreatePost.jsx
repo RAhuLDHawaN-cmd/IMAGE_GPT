@@ -10,8 +10,7 @@ export const CreatePost = () => {
   const navigate = useNavigate();
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [newValue,setNewValue]=useState("XXX")
-
+ 
   const [form, setForm] = useState({
     name: '',
     prompt: '',
@@ -19,7 +18,37 @@ export const CreatePost = () => {
   });
   const handleSubmit=()=>{
     }
-  const generateImage=()=>{
+  const generateImage= async ()=>{
+    if(form.prompt){
+      try{
+        setGeneratingImg(true);
+
+        // ************************** bec it returns promise
+        const response=  await fetch ('http://localhost:8080/api/v1/dalle',{ method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          
+        },
+        body:JSON.stringify({
+          prompt:form.prompt
+        }),
+      })
+
+      //  ************************************
+        const data= await response.json();
+        console.log(data);
+        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
+      }
+      catch(err){
+        console.log(err)
+      }finally{
+        setGeneratingImg(false)
+      }
+   
+    }else {
+      alert('Please provide proper prompt');
+    }
+   
   }
   
   const handleChange=(e)=>{
@@ -27,15 +56,12 @@ export const CreatePost = () => {
     console.log(e.target.name)
   }
 
-  
 
   const handleSurpriseMe=()=>{
 const randomPrompt=getRandomPrompt(form.prompt);
 setForm({...form,prompt:randomPrompt})
 
   }
-
-  
 
   return (
 <section className="max-w-7xl mx-auto">
@@ -56,7 +82,7 @@ setForm({...form,prompt:randomPrompt})
             handleChange={handleChange}
             
           />
-{newValue}
+
 <FormField
             labelName="Prompt"
             type="text"
