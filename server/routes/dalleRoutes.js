@@ -1,6 +1,6 @@
-import express  from "express"
+import express  from 'express'
 import * as dotenv from 'dotenv'
-import { Configuration, OpenAIApi } from "openai"
+import { Configuration, OpenAIApi } from 'openai'
 
 dotenv.config();
 
@@ -13,20 +13,18 @@ dotenv.config();
 const router=express.Router();
 
 const configuration=new Configuration({
-organization: "org-TlwctFF8eZqaR3QFOq42Glig",
     apiKey: process.env.OPENAI_API_KEY,
 });
+console.log(configuration.apiKey);
 const openai= new OpenAIApi(configuration);
-console.log(openai)
+// console.log(openai)
 router.get('/',(req,res)=>{
     res.send("Get from POST_ROUTE");
 })
 
-
 router.route('/').post(async (req, res) => {
   try {
     const { prompt } = req.body;
-    console.log(prompt)
 
     const aiResponse = await openai.createImage({
       prompt,
@@ -36,14 +34,13 @@ router.route('/').post(async (req, res) => {
     });
 
     const image = aiResponse.data.data[0].b64_json;
+    console.log(image)
     res.status(200).json({ photo: image });
   } catch (error) {
     console.error(error);
     res.status(500).send(error?.response.data.error.message || 'Something went wrong');
   }
 });
-
-
 
 export default router;
 
