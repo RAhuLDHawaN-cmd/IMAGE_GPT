@@ -17,7 +17,7 @@ organization: "org-TlwctFF8eZqaR3QFOq42Glig",
     apiKey: process.env.OPENAI_API_KEY,
 });
 const openai= new OpenAIApi(configuration);
-
+console.log(openai)
 router.get('/',(req,res)=>{
     res.send("Get from POST_ROUTE");
 })
