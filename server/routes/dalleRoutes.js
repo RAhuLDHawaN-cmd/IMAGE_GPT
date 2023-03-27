@@ -1,26 +1,20 @@
-import express  from 'express'
-import * as dotenv from 'dotenv'
-import { Configuration, OpenAIApi } from 'openai'
+import express from 'express';
+import * as dotenv from 'dotenv';
+import { Configuration, OpenAIApi } from 'openai';
 
 dotenv.config();
 
+const router = express.Router();
 
-// this returns whole obj of express
-// const app=express()
-
-
-// this returns obj.Router of express aka mini app 
-const router=express.Router();
-
-const configuration=new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
 });
-console.log(configuration.apiKey);
-const openai= new OpenAIApi(configuration);
-// console.log(openai)
-router.get('/',(req,res)=>{
-    res.send("Get from POST_ROUTE");
-})
+
+const openai = new OpenAIApi(configuration);
+
+router.route('/').get((req, res) => {
+  res.status(200).json({ message: 'Hello from DALL-E!' });
+});
 
 router.route('/').post(async (req, res) => {
   try {
@@ -34,7 +28,6 @@ router.route('/').post(async (req, res) => {
     });
 
     const image = aiResponse.data.data[0].b64_json;
-    console.log(image)
     res.status(200).json({ photo: image });
   } catch (error) {
     console.error(error);
@@ -43,4 +36,3 @@ router.route('/').post(async (req, res) => {
 });
 
 export default router;
-
