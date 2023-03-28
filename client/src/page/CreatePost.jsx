@@ -32,7 +32,6 @@ const CreatePost = () => {
 
     return null;
 
-
   }
 
 
@@ -138,8 +137,8 @@ const handleStop=()=>{
       
     <p className=' my-4'> "{transcript?transcript:"Your voice shows here"}"</p>
 
-    <button type="button" onClick={SpeechRecognition.startListening} className="mx-6"> <FaMicrophone style={{color: 'red'} }/> Dictate </button>      
-      <button  type="button" onClick={handleStop} className="mx-6"><FaTextHeight/> Insert </button>
+    <button type="button" onClick={SpeechRecognition.startListening} className="mr-3"> <FaMicrophone style={{color: 'red'} }/> Dictate </button>      
+      <button  type="button" onClick={handleStop} className="mx-3"><FaTextHeight/> Insert </button>
       <button  type="button" onClick={()=>{
         setForm({ ...form, prompt: ""});
         resetTranscript
