@@ -1,5 +1,4 @@
 import React from 'react';
-
 const FormField = ({
   labelName,
   type,
@@ -9,7 +8,10 @@ const FormField = ({
   handleChange,
   isSurpriseMe,
   handleSurpriseMe,
-}) => (
+}) => {
+
+
+return (
   <div>
     <div className="flex items-center gap-2 mb-2">
       <label
@@ -28,6 +30,8 @@ const FormField = ({
         </button>
       )}
     </div>
+    
+    
     <input
       type={type}
       id={name}
@@ -39,6 +43,6 @@ const FormField = ({
       required
     />
   </div>
-);
+);};
 
 export default FormField;

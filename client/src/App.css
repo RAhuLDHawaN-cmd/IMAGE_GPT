@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.search_field {
+  display: inline-block;
+  border: 1px inset #ccc;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

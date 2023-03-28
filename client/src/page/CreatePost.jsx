@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "regenerator-runtime/runtime.js";
+import regeneratorRuntime from "regenerator-runtime";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
+import { FaMicrophone,FaTextHeight,FaEraser } from 'react-icons/fa';
 
 import { preview } from '../assets';
 import { getRandomPrompt } from '../utils';
@@ -17,7 +22,29 @@ const CreatePost = () => {
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const { transcript, resetTranscript } = useSpeechRecognition({
+    continuous: true
+  });
+  
+  const visible= false;
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    alert("if you cant open page, probabilty your browser does not support Voice Dictation");
+
+    return null;
+
+
+  }
+
+
+const handleStop=()=>{
+  const tras={transcript}
+  SpeechRecognition.stopListening;
+
+  // console.log(tras.transcript);
+  setForm({ ...form, prompt: tras.transcript });
+}
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value  });
 
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompt);
@@ -77,11 +104,13 @@ const CreatePost = () => {
     }
   };
 
+  
   return (
     <section className="max-w-7xl mx-auto">
+      
       <div>
-        <h1 className="font-extrabold text-[#222328] text-[32px]">Create</h1>
-        <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">Generate an imaginative image through DALL-E AI and share it with the community</p>
+        <h1 className="font-extrabold text-[#222328] text-[43px]"> Create </h1>
+        <p className="mt-2 text-[#666e75] text-[22px] max-w-[500px]">Generate an imaginative image through DALL-E AI and share it with the community</p>
       </div>
 
       <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
@@ -105,7 +134,20 @@ const CreatePost = () => {
             isSurpriseMe
             handleSurpriseMe={handleSurpriseMe}
           />
+          <div>
+      
+    <p className=' my-4'> "{transcript?transcript:"Your voice shows here"}"</p>
 
+    <button type="button" onClick={SpeechRecognition.startListening} className="mx-6"> <FaMicrophone style={{color: 'red'} }/> Dictate </button>      
+      <button  type="button" onClick={handleStop} className="mx-6"><FaTextHeight/> Insert </button>
+      <button  type="button" onClick={()=>{
+        setForm({ ...form, prompt: ""});
+        resetTranscript
+
+
+      }}> <FaEraser/> Clear  </button>
+
+    </div>
           <div className="relative bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-64 p-3 h-64 flex justify-center items-center">
             { form.photo ? (
               <img
