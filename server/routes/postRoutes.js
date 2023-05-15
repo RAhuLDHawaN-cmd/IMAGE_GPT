@@ -11,7 +11,7 @@ const router = express.Router();
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: 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,
+  api_secret: "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",
 });
 
 router.route('/').get(async (req, res) => {
